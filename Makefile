@@ -40,8 +40,8 @@ OBJS = $(COMMON_OBJS) $(EXE_OBJS)
 .PRECIOUS: $(OBJS)
 
 -include $(OBJS:.o=.d)
-%: %.o $(COMMON_OBJS)
-	$(CXX) -o $@ $^ $(LIB)
+$(EXE): $(EXE_OBJS) $(COMMON_OBJS)
+	$(CXX) -o $@ $(COMMON_OBJS) $@.o $(LIB)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $*.cpp -o $*.o
