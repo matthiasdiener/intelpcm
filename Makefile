@@ -3,7 +3,7 @@
 # written by Roman Dementiev and Jim Harris
 #
 
-EXE = pcm-numa.x pcm-power.x pcm.x pcm-sensor.x pcm-msr.x pcm-memory.x pcm-tsx.x pcm-pcie.x pcm-core.x
+EXE = pcm-numa pcm-power pcm pcm-sensor pcm-msr pcm-memory pcm-tsx pcm-pcie pcm-core
 
 all: $(EXE)
 
@@ -33,14 +33,14 @@ CXXFLAGS += -std=c++0x
 endif
 
 COMMON_OBJS = msr.o cpucounters.o pci.o client_bw.o utils.o
-EXE_OBJS = $(EXE:.x=.o)
+EXE_OBJS = $(addsuffix .o,$(EXE))
 OBJS = $(COMMON_OBJS) $(EXE_OBJS)
 
 # ensure 'make' does not delete the intermediate .o files
 .PRECIOUS: $(OBJS)
 
 -include $(OBJS:.o=.d)
-%.x: %.o $(COMMON_OBJS)
+%: %.o $(COMMON_OBJS)
 	$(CXX) -o $@ $^ $(LIB)
 
 %.o: %.cpp
@@ -64,4 +64,7 @@ nice:
 	uncrustify --replace -c ~/uncrustify.cfg *.cpp *.h WinMSRDriver/Win7/*.h WinMSRDriver/Win7/*.c WinMSRDriver/WinXP/*.h WinMSRDriver/WinXP/*.c  PCM_Win/*.h PCM_Win/*.cpp  
 
 clean:
-	rm -rf *.x *.o *~ *.d
+	rm -rf *.x *.o *~ *.d $(EXE)
+
+install:
+	install $(EXE) /usr/local/bin

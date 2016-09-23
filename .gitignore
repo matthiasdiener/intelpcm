@@ -16,3 +16,13 @@
 *.vxd
 *.exe
 *.tgz
+
+pcm-numa
+pcm-power
+pcm
+pcm-sensor
+pcm-msr
+pcm-memory
+pcm-tsx
+pcm-pcie
+pcm-core
