@@ -66,6 +66,6 @@ nice:
 clean:
 	rm -rf *.x *.o *~ *.d $(EXE)
 
-install:
+install: $(EXE)
 	install $(EXE) /usr/local/bin
 	for f in $(EXE); do chmod a+s /usr/local/bin/$$f ; done
