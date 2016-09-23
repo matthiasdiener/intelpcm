@@ -68,3 +68,4 @@ clean:
 
 install:
 	install $(EXE) /usr/local/bin
+	for f in $(EXE); do chmod a+s /usr/local/bin/$$f ; done
