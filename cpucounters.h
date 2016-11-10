@@ -22,7 +22,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         Include this header file if you want to access CPU counters (core and uncore - including memory controller chips and QPI)
 */
 
-#define INTEL_PCM_VERSION "V2.11 (2016-04-20 12:01:09 +0200 ID=56de28a)"
+#define INTEL_PCM_VERSION "V2.11.1 (2016-10-21 16:06:24 +0200 ID=6cc1299)"
 
 #define INTEL_PCM_COPYRIGHT " Copyright (c) 2009-2016 Intel Corporation"
 
@@ -63,6 +63,10 @@ class CoreCounterState;
 class BasicCounterState;
 class ServerUncorePowerState;
 class PCM;
+
+#ifdef _MSC_VER
+void INTELPCM_API restrictDriverAccess(LPCWSTR path);
+#endif
 
 /*
         CPU performance monitoring routines
@@ -1330,6 +1334,7 @@ double getDRAMConsumedJoules(const CounterStateType & before, const CounterState
 
     if(   PCM::HASWELLX == m->getCPUModel()
        || PCM::BDX_DE == m->getCPUModel()
+        || PCM::BDX == m->getCPUModel()
         ) {
 /* as described in sections 5.3.2 (DRAM_POWER_INFO) and 5.3.3 (DRAM_ENERGY_STATUS) of
  * Volume 2 (Registers) of

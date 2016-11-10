@@ -95,6 +95,12 @@ bool PCM::initWinRing0Lib()
 	
 	if(result == FALSE) hOpenLibSys = NULL;
 
+    BYTE major, minor, revision, release;
+    GetDriverVersion(&major, &minor, &revision, &release);
+    wchar_t buffer[128];
+    swprintf_s(buffer, 128, _T("\\\\.\\WinRing0_%d_%d_%d"),(int)major,(int)minor, (int)revision);
+    restrictDriverAccess(buffer);
+
 	return result==TRUE;
 }
 
@@ -894,7 +900,7 @@ bool PCM::discoverSystemTopology()
             topology.push_back(entries[i]);
         }
     }
-	delete entries;
+	delete[] entries;
 // End of OSX specific code
 #endif // end of ifndef __APPLE__
 
@@ -2641,6 +2647,11 @@ CoreCounterState getCoreCounterState(uint32 core)
 #ifdef PCM_USE_PERF
 void PCM::readPerfData(uint32 core, std::vector<uint64> & outData)
 {
+    if(perfEventHandle[core][PERF_GROUP_LEADER_COUNTER] < 0)
+    {
+        std::fill(outData.begin(), outData.end(), 0);
+        return;
+    }
     uint64 data[1 + PERF_MAX_COUNTERS];
     const int32 bytes2read =  sizeof(uint64)*(1 + core_fixed_counter_num_used + core_gen_counter_num_used);
     int result = ::read(perfEventHandle[core][PERF_GROUP_LEADER_COUNTER], data, bytes2read );

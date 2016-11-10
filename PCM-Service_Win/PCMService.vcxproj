@@ -250,6 +250,12 @@
     <ClCompile Include="PCMInstaller.cpp" />
     <ClCompile Include="PCMService.cpp" />
     <ClCompile Include="..\utils.cpp" />
+        <ClCompile Include="..\PCM_Win\restrictDriverAccess.cpp">
+	      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</CompileAsManaged>
+	            <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Async</ExceptionHandling>
+		          <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</CompileAsManaged>
+			        <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Async</ExceptionHandling>
+				    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Intelpcm.dll\Intelpcm.h" />

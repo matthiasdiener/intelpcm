@@ -182,23 +182,26 @@ int main(int argc, char * argv[])
     conf.nGPCounters = 4;
     switch(m->getCPUModel())
     {
-        case PCM::WESTMERE_EX:
-            conf.OffcoreResponseMsrValue[0] = 0x40FF; // OFFCORE_RESPONSE.ANY_REQUEST.LOCAL_DRAM:  Offcore requests satisfied by the local DRAM
-            conf.OffcoreResponseMsrValue[1] = 0x20FF; // OFFCORE_RESPONSE.ANY_REQUEST.REMOTE_DRAM: Offcore requests satisfied by a remote DRAM
-            break;
-        case PCM::JAKETOWN:
-        case PCM::IVYTOWN:
-            conf.OffcoreResponseMsrValue[0] = 0x780400000 | 0x08FFF ; // OFFCORE_RESPONSE.*.LOCAL_DRAM 
-            conf.OffcoreResponseMsrValue[1] = 0x7ff800000 | 0x08FFF ; // OFFCORE_RESPONSE.*.REMOTE_DRAM 
-            break;
-        case PCM::HASWELLX:
-        case PCM::BDX:
-            conf.OffcoreResponseMsrValue[0] = 0x600400000 | 0x08FFF ; // OFFCORE_RESPONSE.*.LOCAL_DRAM
-            conf.OffcoreResponseMsrValue[1] = 0x67f800000 | 0x08FFF ; // OFFCORE_RESPONSE.*.REMOTE_DRAM
-            break;
-        default:
-            cerr << "pcm-numa tool does not support your processor currently." << endl;
-            exit(EXIT_FAILURE);
+    case PCM::WESTMERE_EX:
+        conf.OffcoreResponseMsrValue[0] = 0x40FF;                // OFFCORE_RESPONSE.ANY_REQUEST.LOCAL_DRAM:  Offcore requests satisfied by the local DRAM
+        conf.OffcoreResponseMsrValue[1] = 0x20FF;                // OFFCORE_RESPONSE.ANY_REQUEST.REMOTE_DRAM: Offcore requests satisfied by a remote DRAM
+        break;
+    case PCM::JAKETOWN:
+    case PCM::IVYTOWN:
+        conf.OffcoreResponseMsrValue[0] = 0x780400000 | 0x08FFF; // OFFCORE_RESPONSE.*.LOCAL_DRAM
+        conf.OffcoreResponseMsrValue[1] = 0x7ff800000 | 0x08FFF; // OFFCORE_RESPONSE.*.REMOTE_DRAM
+        break;
+    case PCM::HASWELLX:
+        conf.OffcoreResponseMsrValue[0] = 0x600400000 | 0x08FFF; // OFFCORE_RESPONSE.*.LOCAL_DRAM
+        conf.OffcoreResponseMsrValue[1] = 0x63f800000 | 0x08FFF; // OFFCORE_RESPONSE.*.REMOTE_DRAM
+        break;
+    case PCM::BDX:
+        conf.OffcoreResponseMsrValue[0] = 0x0604008FFF; // OFFCORE_RESPONSE.*.LOCAL_DRAM
+        conf.OffcoreResponseMsrValue[1] = 0x067BC08FFF; // OFFCORE_RESPONSE.*.REMOTE_DRAM
+        break;
+    default:
+        cerr << "pcm-numa tool does not support your processor currently." << endl;
+        exit(EXIT_FAILURE);
     }
     EventSelectRegister regs[4];
     conf.gpCounterCfg = regs;
